@@ -8,11 +8,6 @@ variable "pipeline_name" {
   type        = string
 }
 
-variable "target_prefix" {
-  description = "The prefix for the cloud deploy targets"
-  type        = string
-}
-
 variable "development_targets" {
   description = "The development targets"
   type = list(object({

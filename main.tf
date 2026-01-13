@@ -18,7 +18,7 @@ resource "google_clouddeploy_target" "development_child_targets" {
   for_each = { for item in var.development_targets : "${item.project_id}-${item.region}" => item }
 
   location = var.project_region
-  name     = "${var.target_prefix}dev-${each.value.region}"
+  name     = "${each.key}-dev"
 
   deploy_parameters = try(each.value.deploy_parameters, null)
 
@@ -29,7 +29,7 @@ resource "google_clouddeploy_target" "development_child_targets" {
 
 resource "google_clouddeploy_target" "development_multi_target" {
   location = var.project_region
-  name     = "${var.target_prefix}dev"
+  name     = "${var.pipeline_name}-dev"
 
   multi_target {
     target_ids = [for target in google_clouddeploy_target.development_child_targets : target.target_id]
@@ -40,7 +40,7 @@ resource "google_clouddeploy_target" "production_child_targets" {
   for_each = { for item in var.production_targets : "${item.project_id}-${item.region}" => item }
 
   location = var.project_region
-  name     = "${var.target_prefix}prd-${each.value.region}"
+  name     = "${each.key}-prd"
 
   deploy_parameters = try(each.value.deploy_parameters, null)
 
@@ -51,7 +51,7 @@ resource "google_clouddeploy_target" "production_child_targets" {
 
 resource "google_clouddeploy_target" "production_multi_target" {
   location = var.project_region
-  name     = "${var.target_prefix}prd"
+  name     = "${var.pipeline_name}-prd"
 
   multi_target {
     target_ids = [for target in google_clouddeploy_target.production_child_targets : target.target_id]
